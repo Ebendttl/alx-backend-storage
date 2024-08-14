@@ -1,45 +1,36 @@
 #!/usr/bin/env python3
 """
-8-all.py
+Insert a new document into a MongoDB
+collection based on keyword arguments.
 
-Function to list all documents in a collection.
-
-Prototype: def list_all(mongo_collection):
-- Return an empty list if no document in the collection
+Prototype: def insert_school(mongo_collection, **kwargs):
 - mongo_collection will be the pymongo collection object
-
-This script defines a function to list
-all documents in a MongoDB collection.
-The function returns an empty list if
-there are no documents in the collection.
+- Returns the new _id of the inserted document
 """
 
 # from pymongo.collection import Collection
-# from typing import List, Dict
+# from typing import Any
 
 
-# def list_all(mongo_collection: Collection) -> List[Dict]:
-def list_all(mongo_collection):
+# def insert_school(mongo_collection: Collection, **kwargs: Any) -> str:
+def insert_school(mongo_collection, **kwargs):
     """
-    List all documents in the given MongoDB collection.
+    Inserts a new document into the given MongoDB
+    collection based on the provided keyword arguments.
 
     Parameters:
-    mongo_collection (Collection): The pymongo collection object from
-                                    which to list/retrieve documents.
+    mongo_collection (Collection): The pymongo collection object
+                                    into which the document will be inserted.
+    **kwargs (Any): Keyword arguments representing the fields
+                    and values of the document to be inserted.
 
     Returns:
-    List[Dict]: A list of dictionaries representing all
-                the documents in the collection.
-                Returns an empty list if the collection is
-                empty, has no documents or not provided.
+    str: The _id of the newly inserted document.
     """
-    # Check if the collection is not provided or empty
-    if mongo_collection is None or mongo_collection.count_documents({}) == 0:
-        return []
+    # Insert the document into the collection
+    # with the provided keyword arguments
+    result = mongo_collection.insert_one(kwargs)
 
-    # Fetch/Retrieve all documents from the collection
-    documents = mongo_collection.find()
-
-    # Convert the cursor to a list and return it
-    # return list(documents)
-    return [document for document in documents]
+    # Return the _id of the newly inserted document
+    # return str(result.inserted_id)
+    return result.inserted_id
